@@ -21,7 +21,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     }
 
     @Override
-    public Cozinha buscarPorId(Long id) {
+    public Cozinha buscar(Long id) {
         return em.find(Cozinha.class, id);
     }
 
@@ -34,7 +34,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     @Override
     @Transactional
     public void remover(Cozinha cozinha) {
-        cozinha = buscarPorId(cozinha.getId());
+        cozinha = buscar(cozinha.getId());
         em.remove(cozinha);
     }
 }
