@@ -4,10 +4,7 @@ import com.dionlan.food.domain.model.Cozinha;
 import com.dionlan.food.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +30,10 @@ public class CozinhaController {
         }
 
         return ResponseEntity.notFound().build();
-        //return cozinhaRepository.buscar(cozinhaId);
+    }
+
+    @PostMapping
+    public void adicionar(@RequestBody  Cozinha cozinha){
+        cozinhaRepository.salvar(cozinha);
     }
 }
