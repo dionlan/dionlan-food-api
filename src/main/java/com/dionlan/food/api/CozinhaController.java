@@ -50,7 +50,7 @@ public class CozinhaController {
         Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
         if(nonNull(cozinhaAtual)){
             copyProperties(cozinha, cozinhaAtual, "id");
-            cozinhaRepository.salvar(cozinhaAtual);
+            cozinhaAtual = cadastroCozinhaService.salvar(cozinhaAtual);
             return ResponseEntity.ok(cozinhaAtual);
         }
         return ResponseEntity.notFound().build();
