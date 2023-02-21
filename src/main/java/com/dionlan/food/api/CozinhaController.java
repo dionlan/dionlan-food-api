@@ -1,5 +1,7 @@
 package com.dionlan.food.api;
 
+import com.dionlan.food.domain.exception.EntidadeEmUsoException;
+import com.dionlan.food.domain.exception.EntidadeNaoEncontradaException;
 import com.dionlan.food.domain.model.Cozinha;
 import com.dionlan.food.domain.repository.CozinhaRepository;
 import com.dionlan.food.domain.service.CadastroCozinhaService;
@@ -56,14 +58,14 @@ public class CozinhaController {
 
     @DeleteMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId){
-        try{
-            Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
-            if(nonNull(cozinha)){
-                cozinhaRepository.remover(cozinha);
-                return ResponseEntity.noContent().build();
-            }
+        try {
+            cadastroCozinhaService.excluir(cozinhaId);
             return ResponseEntity.notFound().build();
-        }catch (DataIntegrityViolationException e){
+
+        } catch (EntidadeNaoEncontradaException e){
+            return ResponseEntity.noContent().build();
+
+        } catch (EntidadeEmUsoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
