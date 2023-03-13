@@ -1,26 +1,58 @@
 package com.dionlan.food.api;
 
+import com.dionlan.food.domain.exception.EntidadeNaoEncontradaException;
 import com.dionlan.food.domain.model.Estado;
-import com.dionlan.food.domain.repository.EstadoRepository;
+import com.dionlan.food.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RestController
 @RequestMapping("/estados")
 public class EstadoController {
 
     @Autowired
-    private EstadoRepository estadoRepository;
+    private EstadoService estadoService;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public List<Estado> listar() {
-        return estadoRepository.listar();
+        return estadoService.listar();
+    }
+
+    @GetMapping("/{estadoId}")
+    public Estado buscarPorId(@PathVariable Long estadoId){
+        return estadoService.buscarPorId(estadoId);
+    }
+
+    @PostMapping
+    public ResponseEntity<Estado> adicionar(@RequestBody Estado estado){
+        Estado estadoAtual = estadoService.adicionar(estado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoAtual);
+    }
+
+    @PutMapping("/{estadoId}")
+    public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado){
+        try{
+            Estado estadoAtual = estadoService.buscarPorId(estadoId);
+            if(nonNull(estadoAtual)){
+                copyProperties(estado, estadoAtual, "id");
+                estadoAtual = estadoService.adicionar(estadoAtual);
+                return ResponseEntity.ok(estadoAtual);
+            }
+        }catch (EntidadeNaoEncontradaException e){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{estadoId}")
+    public void excluir(@PathVariable Long estadoId){
+        estadoService.excluir(estadoId);
     }
 }

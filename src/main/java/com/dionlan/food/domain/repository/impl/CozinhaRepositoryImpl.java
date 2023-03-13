@@ -7,9 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.*;
 

@@ -42,7 +42,7 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public void adicionar(@RequestBody  Cozinha cozinha){
+    public void adicionar(@RequestBody Cozinha cozinha){
         cadastroCozinhaService.salvar(cozinha);
     }
 
