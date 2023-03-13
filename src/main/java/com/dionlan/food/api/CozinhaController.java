@@ -6,11 +6,12 @@ import com.dionlan.food.domain.model.Cozinha;
 import com.dionlan.food.domain.repository.CozinhaRepository;
 import com.dionlan.food.domain.service.CadastroCozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 import static java.util.Objects.nonNull;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
