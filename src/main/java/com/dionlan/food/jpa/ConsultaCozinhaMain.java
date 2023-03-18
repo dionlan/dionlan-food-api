@@ -17,7 +17,7 @@ public class ConsultaCozinhaMain {
         Cozinha cozinha = new Cozinha();
         cozinha.setNome("Brasileira");
 
-        cadastroCozinha.salvar(cozinha);
+        //cadastroCozinha.salvar(cozinha);
         /*List<Cozinha> cozinhas = cadastroCozinha.lista();
         for(Cozinha cozinha : cozinhas){
             System.out.println(cozinha.getNome());
