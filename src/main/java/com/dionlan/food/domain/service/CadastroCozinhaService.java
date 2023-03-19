@@ -10,14 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CadastroCozinhaService {
-
     @Autowired
     private CozinhaRepository cozinhaRepository;
-
     public Cozinha salvar(Cozinha cozinha){
         return cozinhaRepository.save(cozinha);
     }
-
     public void excluir(Long cozinhaId){
         try {
             cozinhaRepository.deleteById(cozinhaId);
