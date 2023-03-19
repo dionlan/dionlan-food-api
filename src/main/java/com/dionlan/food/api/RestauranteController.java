@@ -2,8 +2,6 @@ package com.dionlan.food.api;
 
 import com.dionlan.food.domain.exception.EntidadeNaoEncontradaException;
 import com.dionlan.food.domain.model.Restaurante;
-import com.dionlan.food.domain.repository.CozinhaRepository;
-import com.dionlan.food.domain.repository.RestauranteRepository;
 import com.dionlan.food.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +21,15 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
-
-    @Autowired
-    private RestauranteRepository restauranteRepository;
-
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
-
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
-
     @GetMapping
     public List<Restaurante> listar(){
-        return restauranteRepository.listar();
+        return cadastroRestauranteService.buscar();
     }
-
     @GetMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId){
-        Restaurante restaurante = restauranteRepository.buscarPorId(restauranteId);
+        Restaurante restaurante = cadastroRestauranteService.buscarPorId(restauranteId);
 
         if(nonNull(restaurante)){
            return ResponseEntity.ok(restaurante);
@@ -61,7 +50,7 @@ public class RestauranteController {
     @PutMapping("/{restauranteId}")
     public ResponseEntity<?> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurate){
         try{
-            Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
+            Restaurante restauranteAtual = cadastroRestauranteService.buscarPorId(restauranteId);
             if(nonNull(restauranteId)){
                 copyProperties(restaurate, restauranteAtual, "id");
                 restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
@@ -77,7 +66,7 @@ public class RestauranteController {
 
     @PatchMapping("/{restauranteId}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> camposOrigem){
-        Restaurante restauranteAtual = cadastroRestauranteService.buscar(restauranteId);
+        Restaurante restauranteAtual = cadastroRestauranteService.buscarPorId(restauranteId);
         if(isNull(restauranteAtual)) {
             ResponseEntity.notFound().build();
         }
