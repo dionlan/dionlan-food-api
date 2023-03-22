@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/teste")
@@ -27,6 +28,16 @@ public class TesteController {
         return cozinhaRepository.findByNomeContaining(nome);
     }
 
+    @GetMapping("/cozinhas/unica-por-nome")
+    public boolean cozinhasExists(String nome){
+        return cozinhaRepository.existsByNome(nome);
+    }
+
+    @GetMapping("/cozinhas/count-por-cozinhaId")
+    public int countCozinhasId(Long cozinhaId){
+        return cozinhaRepository.countById(cozinhaId);
+    }
+
     @GetMapping("/restaurantes/por-taxa-frete")
     public List<Restaurante> restaurantesPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal){
         return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
@@ -35,5 +46,15 @@ public class TesteController {
     @GetMapping("/restaurantes/por-nome")
     public List<Restaurante> restaurantesPorNome(String nome, Long cozinhaId){
         return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+    }
+
+    @GetMapping("/restaurantes/primeiro-por-nome")
+    public Optional<Restaurante> primeiroPorPorNome(String nome){
+        return restauranteRepository.findFirstRestauranteByNomeContaining(nome);
+    }
+
+    @GetMapping("/restaurantes/top2-por-nome")
+    public List<Restaurante> top2PorNome(String nome){
+        return restauranteRepository.findTop2ByNomeContaining(nome);
     }
 }
